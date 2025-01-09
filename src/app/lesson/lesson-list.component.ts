@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { RouterModule } from '@angular/router';
 import { LessonService } from './lesson.service';
 
 @Component({
@@ -7,7 +8,7 @@ import { LessonService } from './lesson.service';
   templateUrl: './lesson-list.component.html',
   styleUrls: ['./lesson-list.component.css'],
   standalone: true,
-  imports: [CommonModule]
+  imports: [CommonModule, RouterModule]
 })
 export class LessonListComponent implements OnInit {
   lessons: any[] = [];

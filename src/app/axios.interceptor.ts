@@ -1,6 +1,5 @@
 import axios from 'axios';
 
-// Add a request interceptor
 axios.interceptors.request.use(
   (config) => {
     const jwt = localStorage.getItem('jwt');

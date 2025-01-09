@@ -1,0 +1,15 @@
+<div class="lesson-form">
+    <h2>{{ isEditMode ? 'Edit Lesson' : 'Create Lesson' }}</h2>
+    <form (ngSubmit)="onSubmit()" #lessonForm="ngForm">
+      <div class="form-group">
+        <label for="name">Name</label>
+        <input type="text" id="name" [(ngModel)]="lesson.name" name="name" required class="form-control" />
+      </div>
+      <div class="form-group">
+        <label for="description">Description</label>
+        <textarea id="description" [(ngModel)]="lesson.description" name="description" required class="form-control"></textarea>
+      </div>
+      <button type="submit" class="btn btn-primary">{{ isEditMode ? 'Update' : 'Create' }}</button>
+      <button type="button" class="btn btn-secondary" (click)="cancel()">Cancel</button>
+    </form>
+</div>

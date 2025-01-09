@@ -32,3 +32,8 @@
 .main {
   padding: 2rem;
 }
+
+.logout {
+  cursor: pointer;
+  color: white;
+}
