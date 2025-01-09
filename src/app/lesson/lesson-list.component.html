@@ -1,0 +1,19 @@
+<div class="lesson-list">
+  <h2>Lessons</h2>
+  <table>
+    <thead>
+      <tr>
+        <th>Title</th>
+        <th>Actions</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let lesson of lessons">
+        <td>{{ lesson.name }}</td>
+        <td>
+          <button (click)="deleteLesson(lesson.id)">Delete</button>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+</div>
