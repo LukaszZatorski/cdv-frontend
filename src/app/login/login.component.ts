@@ -13,10 +13,11 @@ import { AuthService } from '../auth.service';
 export class LoginComponent {
   username: string = '';
   password: string = '';
+  errorMessage: string | null = null;
 
   constructor(private authService: AuthService) { }
 
-  onSubmit(): void {
-    this.authService.login(this.username, this.password);
+  async onSubmit(): Promise<void> {
+    this.errorMessage = await this.authService.login(this.username, this.password);
   }
 }
