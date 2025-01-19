@@ -17,7 +17,15 @@ export class LoginComponent {
 
   constructor(private authService: AuthService) { }
 
-  async onSubmit(): Promise<void> {
-    this.errorMessage = await this.authService.login(this.username, this.password);
+  onSubmit(): void {
+    this.authService.login(this.username, this.password).subscribe({
+      next: () => {
+        this.errorMessage = null;
+      },
+      error: (err) => {
+        this.errorMessage = 'Login failed. Please try again.';
+        console.error('Login error', err);
+      }
+    });
   }
 }

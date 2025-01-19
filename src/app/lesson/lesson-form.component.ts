@@ -3,6 +3,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { LessonService } from './lesson.service';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
+import { Lesson } from './lesson.model';
 
 @Component({
   selector: 'app-lesson-form',
@@ -24,22 +25,36 @@ export class LessonFormComponent implements OnInit {
   ngOnInit(): void {
     const id = this.route.snapshot.paramMap.get('id');
     if (id && Number.isInteger(Number(id))) {
-      this.lessonService.getLessonById(Number(id)).then(lesson => {
-        this.lesson = lesson;
+      this.isEditMode = true;
+      this.lessonService.getLessonById(Number(id)).subscribe({
+        next: (lesson: Lesson) => {
+          this.lesson = lesson;
+        },
+        error: (error) => {
+          console.error('Error fetching lesson:', error);
+        }
       });
-    } else {
-      console.error('Invalid lesson ID');
     }
   }
 
   onSubmit(): void {
     if (this.isEditMode) {
-      this.lessonService.updateLesson(this.lesson.id, this.lesson).then(() => {
-        this.router.navigate(['/lessons']);
+      this.lessonService.updateLesson(this.lesson.id, this.lesson).subscribe({
+        next: () => {
+          this.router.navigate(['/lessons']);
+        },
+        error: (error) => {
+          console.error('Error updating lesson:', error);
+        }
       });
     } else {
-      this.lessonService.createLesson(this.lesson).then(() => {
-        this.router.navigate(['/lessons']);
+      this.lessonService.createLesson(this.lesson).subscribe({
+        next: () => {
+          this.router.navigate(['/lessons']);
+        },
+        error: (error) => {
+          console.error('Error creating lesson:', error);
+        }
       });
     }
   }

@@ -1,83 +1,54 @@
 import { Injectable } from '@angular/core';
-import axios from 'axios';
+import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 import { AuthService } from '../auth.service';
 import { environment } from '../../environments/environment';
+import { Observable, throwError } from 'rxjs';
+import { catchError, map } from 'rxjs/operators';
+import { Lesson } from './lesson.model';
 
 @Injectable({
   providedIn: 'root'
 })
 export class LessonService {
-  
-  constructor(private authService: AuthService) {}
 
-  async getLessons(): Promise<any> {
-    try {
-      const response = await axios.get(`${environment.apiUrl}lessons`);
-      return response.data;
-    } catch (error: any) {
-      console.error('Error fetching lessons:', error);
-      if (error.response && error.response.data.message === 'Invalid JWT Token') {
-        console.error('Invalid JWT Token, logging out');
-        this.authService.logout();
-      } else {
-        console.error('An error occurred:', error.message);
-      }
-      throw error;
-    }
+  constructor(private authService: AuthService, private http: HttpClient) {}
+
+  getLessons(): Observable<Lesson[]> {
+    return this.http.get<Lesson[]>(`${environment.apiUrl}lessons`).pipe(
+      catchError(this.handleError.bind(this))
+    );
   }
 
-  async getLessonById(id: number): Promise<any> {
-    try {
-      const response = await axios.get(`${environment.apiUrl}lessons/${id}`);
-      return response.data;
-    } catch (error: any) {
-      console.error(`Error fetching lesson with id ${id}:`, error);
-      if (error.response && error.response.data.message === 'Invalid JWT Token') {
-        console.error('Invalid JWT Token, logging out');
-        this.authService.logout();
-      }
-      throw error;
-    }
+  getLessonById(id: number): Observable<Lesson> {
+    return this.http.get<Lesson>(`${environment.apiUrl}lessons/${id}`).pipe(
+      catchError(this.handleError.bind(this))
+    );
   }
 
-  async createLesson(lessonData: any): Promise<any> {
-    try {
-      const response = await axios.post(`${environment.apiUrl}lessons`, lessonData);
-      return response.data;
-    } catch (error: any) {
-      console.error('Error creating lesson:', error);
-      if (error.response && error.response.data.message === 'Invalid JWT Token') {
-        console.error('Invalid JWT Token, logging out');
-        this.authService.logout();
-      }
-      throw error;
-    }
+  createLesson(lessonData: any): Observable<Lesson> {
+    return this.http.post<Lesson>(`${environment.apiUrl}lessons`, lessonData).pipe(
+      catchError(this.handleError.bind(this))
+    );
   }
 
-  async updateLesson(id: number, lessonData: any): Promise<any> {
-    try {
-      const response = await axios.put(`${environment.apiUrl}lessons/${id}`, lessonData);
-      return response.data;
-    } catch (error: any) {
-      console.error(`Error updating lesson with id ${id}:`, error);
-      if (error.response && error.response.data.message === 'Invalid JWT Token') {
-        console.error('Invalid JWT Token, logging out');
-        this.authService.logout();
-      }
-      throw error;
-    }
+  updateLesson(id: number, lessonData: Lesson): Observable<Lesson> {
+    return this.http.put<Lesson>(`${environment.apiUrl}lessons/${id}`, lessonData).pipe(
+      catchError(this.handleError.bind(this))
+    );
   }
 
-  async deleteLesson(id: number): Promise<void> {
-    try {
-      await axios.delete(`${environment.apiUrl}lessons/${id}`);
-    } catch (error: any) {
-      console.error(`Error deleting lesson with id ${id}:`, error);
-      if (error.response && error.response.data.message === 'Invalid JWT Token') {
-        console.error('Invalid JWT Token, logging out');
-        this.authService.logout();
-      }
-      throw error;
+  deleteLesson(id: number): Observable<Lesson> {
+    return this.http.delete<Lesson>(`${environment.apiUrl}lessons/${id}`).pipe(
+      catchError(this.handleError.bind(this))
+    );
+  }
+
+  private handleError(error: HttpErrorResponse): Observable<never> {
+    console.error('Error:', error);
+    if (error.error.message === 'Invalid JWT Token') {
+      console.error('Invalid JWT Token, logging out');
+      this.authService.logout();
     }
+    return throwError(() => new Error(error.message));
   }
 }
