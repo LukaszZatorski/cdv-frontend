@@ -17,10 +17,12 @@ export class LessonDetailComponent implements OnInit {
 
   ngOnInit(): void {
     const id = this.route.snapshot.paramMap.get('id');
-    if (id) {
-      this.lessonService.getLessonById(+id).then(lesson => {
+    if (id && Number.isInteger(Number(id))) {
+      this.lessonService.getLessonById(Number(id)).then(lesson => {
         this.lesson = lesson;
       });
+    } else {
+      console.error('Invalid lesson ID');
     }
   }
 }
