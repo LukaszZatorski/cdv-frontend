@@ -1,6 +1,6 @@
 <div class="lesson-form">
     <h2>{{ isEditMode ? 'Edit Lesson' : 'Create Lesson' }}</h2>
-    <form (ngSubmit)="onSubmit()" #lessonForm="ngForm">
+    <form (ngSubmit)="onSubmit()">
       <div class="form-group">
         <label for="name">Name</label>
         <input type="text" id="name" [(ngModel)]="lesson.name" name="name" required class="form-control" />

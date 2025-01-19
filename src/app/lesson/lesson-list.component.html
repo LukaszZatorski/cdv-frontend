@@ -8,13 +8,15 @@
       </tr>
     </thead>
     <tbody>
-      <tr *ngFor="let lesson of lessons">
-        <td><a [routerLink]="['/lessons', lesson.id]">{{ lesson.name }}</a></td>
-        <td>
+      @for (lesson of lessons; track lesson.id) {
+        <tr>
+          <td><a [routerLink]="['/lessons', lesson.id]">{{ lesson.name }}</a></td>
+          <td>
             <a [routerLink]="['/lessons/edit', lesson.id]"><button class="edit-button">Edit</button></a>
-          <button class="delete-button" (click)="deleteLesson(lesson.id)">Delete</button>
-        </td>
-      </tr>
+            <button class="delete-button" (click)="deleteLesson(lesson.id)">Delete</button>
+          </td>
+        </tr>
+      }
     </tbody>
   </table>
 </div>
