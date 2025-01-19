@@ -1,19 +1,18 @@
 import { Injectable } from '@angular/core';
 import axios from 'axios';
 import { AuthService } from '../auth.service';
+import { environment } from '../../environments/environment';
 
 @Injectable({
   providedIn: 'root'
 })
 export class LessonService {
-
-  private apiUrl = 'http://127.0.0.1:8000/api/';
-
+  
   constructor(private authService: AuthService) {}
 
   async getLessons(): Promise<any> {
     try {
-      const response = await axios.get(`${this.apiUrl}lessons`);
+      const response = await axios.get(`${environment.apiUrl}lessons`);
       return response.data;
     } catch (error: any) {
       console.error('Error fetching lessons:', error);
@@ -29,7 +28,7 @@ export class LessonService {
 
   async getLessonById(id: number): Promise<any> {
     try {
-      const response = await axios.get(`${this.apiUrl}lessons/${id}`);
+      const response = await axios.get(`${environment.apiUrl}lessons/${id}`);
       return response.data;
     } catch (error: any) {
       console.error(`Error fetching lesson with id ${id}:`, error);
@@ -43,7 +42,7 @@ export class LessonService {
 
   async createLesson(lessonData: any): Promise<any> {
     try {
-      const response = await axios.post(`${this.apiUrl}lessons`, lessonData);
+      const response = await axios.post(`${environment.apiUrl}lessons`, lessonData);
       return response.data;
     } catch (error: any) {
       console.error('Error creating lesson:', error);
@@ -57,7 +56,7 @@ export class LessonService {
 
   async updateLesson(id: number, lessonData: any): Promise<any> {
     try {
-      const response = await axios.put(`${this.apiUrl}lessons/${id}`, lessonData);
+      const response = await axios.put(`${environment.apiUrl}lessons/${id}`, lessonData);
       return response.data;
     } catch (error: any) {
       console.error(`Error updating lesson with id ${id}:`, error);
@@ -71,7 +70,7 @@ export class LessonService {
 
   async deleteLesson(id: number): Promise<void> {
     try {
-      await axios.delete(`${this.apiUrl}lessons/${id}`);
+      await axios.delete(`${environment.apiUrl}lessons/${id}`);
     } catch (error: any) {
       console.error(`Error deleting lesson with id ${id}:`, error);
       if (error.response && error.response.data.message === 'Invalid JWT Token') {

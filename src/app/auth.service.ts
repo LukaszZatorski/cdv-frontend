@@ -2,18 +2,18 @@ import { Injectable } from '@angular/core';
 import axios, { AxiosError } from 'axios';
 import { Router } from '@angular/router';
 import { JWTTokenService } from './jwt-token.service';
+import { environment } from '../environments/environment';
 
 @Injectable({
   providedIn: 'root'
 })
 export class AuthService {
-  private apiUrl = 'http://127.0.0.1:8000/api/';
 
   constructor(public router: Router, private jwtTokenService: JWTTokenService) {}
 
   async login(username: string, password: string): Promise<string | null> {
     try {
-      const response = await axios.post(`${this.apiUrl}login`, { username, password });
+      const response = await axios.post(`${environment.apiUrl}login`, { username, password });
       if (response.data && response.data.token) {
         this.jwtTokenService.setToken(response.data.token);
         localStorage.setItem('jwt', response.data.token);
